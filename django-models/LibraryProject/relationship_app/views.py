@@ -13,7 +13,7 @@
 #     template_name = 'library_detail.html'
 #     context_object_name = 'library'
 from django.shortcuts import render
-from .models import Book, Library
+from .models import Library, Book
 from django.views.generic.detail import DetailView
 
 # Function-based view to list all books
