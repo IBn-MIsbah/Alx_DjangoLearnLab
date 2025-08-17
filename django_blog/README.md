@@ -18,7 +18,7 @@ The project demonstrates how to build a blogging platform with posts, comments, 
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/django-blog.git
+   git clone https://github.com/IBn-MIsbah/Alx_DjangoLearnLab/tree/main/django_blog
    cd django-blog
    ```
 
