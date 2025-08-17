@@ -8,8 +8,9 @@ from django.views.generic import (
 )
 
 from .forms import UserRegisterationForm, UserUpdateForm, ProfileForm, PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 
 def register(request):
@@ -125,3 +126,19 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         form.save()
         return redirect('post-detail, pk=post.id')
+    
+def search_posts(request):
+    query = request.GET.get('q')
+    results = []
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query)|
+            Q(content__icontains=query)|
+            Q(tags__name__icontains=query)
+        ).distinct()
+    return render(request, 'blog/search_result.html', {'query': query, 'results': results})
+
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = tag.posts.all()
+    return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
