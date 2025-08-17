@@ -8,9 +8,10 @@ from django.views.generic import (
 )
 
 from .forms import UserRegisterationForm, UserUpdateForm, ProfileForm, PostForm, CommentForm
-from .models import Post, Comment, Tag
+from .models import Post, Comment
 from django.urls import reverse_lazy
 from django.db.models import Q
+from taggit.models import Tag
 
 
 def register(request):
@@ -138,7 +139,7 @@ def search_posts(request):
         ).distinct()
     return render(request, 'blog/search_result.html', {'query': query, 'results': results})
 
-def posts_by_tag(request, tag_name):
-    tag = get_object_or_404(Tag, name=tag_name)
-    posts = tag.posts.all()
+def posts_by_tag(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    posts = Post.objects.filter(tags_in='tag')
     return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
