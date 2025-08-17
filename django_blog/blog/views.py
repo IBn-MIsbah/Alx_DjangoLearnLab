@@ -113,3 +113,15 @@ class CommentDeleteView(DeleteView):
     
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'pk', self.object.post.id})
+    
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        post_id = self.kwargs['pk']
+        post = get_object_or_404(Post, pk=post_id)
+        form.instance.post = post
+        form.instance.author = self.request.user
+        form.save()
+        return redirect('post-detail, pk=post.id')
