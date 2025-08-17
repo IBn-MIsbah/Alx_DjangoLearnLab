@@ -1,0 +1,14 @@
+# Core Django framework
+Django>=5.0,<6.0  
+
+# Database adapter (for PostgreSQL, remove if using SQLite by default)
+psycopg2-binary>=2.9  
+
+# For environment variable management
+python-decouple>=3.8  
+
+# Optional: crispy forms (if used for better form rendering)
+django-crispy-forms>=2.0  
+
+# Optional: pillow (for handling images/avatars if needed)
+Pillow>=10.0  
