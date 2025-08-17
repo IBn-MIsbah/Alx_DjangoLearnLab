@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile, Post, Comment, Tag
+from taggit.forms import TagWidget
 
 class UserRegisterationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -33,30 +34,33 @@ class ProfileForm(forms.ModelForm):
         ]
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(required=False, help_text='Comma-separated tags')
+    # tags = forms.CharField(required=False, help_text='Comma-separated tags')
 
     class Meta:
         model = Post
         fields = [
             'title',
             'content',
-            'tags'
+            # 'tags'
         ]
-    def save(self, commit = True):
-        instance = super().save(commit=False)
-        if commit:
-            instance.save()
+        widgets = {
+            'tags': TagWidget()
+        }
+    # def save(self, commit = True):
+    #     instance = super().save(commit=False)
+    #     if commit:
+    #         instance.save()
         
-        tag_names = self.cleaned_data['tags'].split(',')
-        tag_objs = []
+    #     tag_names = self.cleaned_data['tags'].split(',')
+    #     tag_objs = []
 
-        for name in tag_names:
-            name = name.strip()
-            if name:
-                tag_objs, created = Tag.objects.get_or_create(name=name)
-                tag_objs.append(tag_objs)
-        instance.tags.set(tag_objs)
-        return instance
+    #     for name in tag_names:
+    #         name = name.strip()
+    #         if name:
+    #             tag_objs, created = Tag.objects.get_or_create(name=name)
+    #             tag_objs.append(tag_objs)
+    #     instance.tags.set(tag_objs)
+    #     return instance
 
 
 class CommentForm(forms.ModelForm):
