@@ -4,6 +4,20 @@
 <p>{{ object.content }}</p>
 <small>By {{ object.author }} on {{ object.date_posted }}</small>
 
+<!-- Tag Display -->
+{% if object.tags.all %}
+<p>
+    <strong>Tags:</strong>
+    {% for tag in object.tags.all %}
+    <span style="background:#f2f2f2; padding:3px 6px; margin:2px; border-radius:5px;">
+        {{ tag.name }}
+    </span>
+    {% empty %}
+    <span>No tags</span>
+    {% endfor %}
+</p>
+{% endif %}
+
 {% if user == object.author %}
 <a href="{% url 'post-update' object.pk %}">Edit</a>
 <a href="{% url 'post-delete' object.pk %}">Delete</a>
