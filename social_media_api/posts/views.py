@@ -40,8 +40,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 @permission_classes([permissions.IsAuthenticated])
 def feed(request):
     user = request.user
-    followed_user = user.following.all()
-    posts = Post.objects.filter(author_in=followed_user).order_by('-created_at')
+    following_user = user.following.all()
+    posts = Post.objects.filter(author_in=following_user).order_by('-created_at')
 
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
