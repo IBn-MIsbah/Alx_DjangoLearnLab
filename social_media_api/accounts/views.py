@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
+from accounts.models import CustomUser
 
 from .serializers import RegisterSerializer, UserSerializer
 
@@ -45,7 +46,7 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 @permission_classes([permissions.IsAuthenticated])
 def follow_user(request, user_id):
     try:
-        target_user = User.objects.get(id=user_id)
+        target_user = CustomUser.objects.get(id=user_id)
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     
@@ -56,7 +57,7 @@ def follow_user(request, user_id):
 @permission_classes([permissions.IsAuthenticated])
 def unfollow_user(request, user_id):
     try:
-        target_user = User.objects.get(id=user_id)
+        target_user = CustomUser.objects.get(id=user_id)
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
