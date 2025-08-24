@@ -51,3 +51,14 @@ def follow_user(request, user_id):
     
     request.user.followinf.remove(target_user)
     return Response({"message": f"You unfollowed {target_user.username}"}, status=200)
+
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def unfollow_user(request, user_id):
+    try:
+        target_user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    request.user.following.remove(target_user)
+    return Response({"message": f"You unfollowed {target_user.username}"}, status=200)
