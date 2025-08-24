@@ -63,3 +63,11 @@ def unfollow_user(request, user_id):
 
     request.user.following.remove(target_user)
     return Response({"message": f"You unfollowed {target_user.username}"}, status=200)
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def list_users(request):
+    """Optional: Get all users (CustomUser.objects.all())"""
+    users = CustomUser.objects.all()  # ✅ explicitly using .all()
+    data = [{"id": user.id, "username": user.username} for user in users]
+    return Response(data, status=200)
